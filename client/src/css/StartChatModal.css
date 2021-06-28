@@ -13,8 +13,9 @@
 
 .modal__body{
     overflow: scroll;
+    margin-top: 25px;
     background-color: rgba(255,255,255,0.2);
-    height: 60vh;
+    height: 57vh;
     width: 20vw;
     border-radius: 20px;
     overflow-y:auto;

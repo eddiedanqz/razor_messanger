@@ -1,18 +1,16 @@
 import  express,{Request,Response} from "express";
-import {BlockModel} from '../models/Blocked'
+import {MessageModel} from '../models/Message'
 
-//@desc Get all users
-//@route Get api/v1/list
-//access Public
-export const checkBlocked = async (req: Request, res: Response) => {
+//@desc Get all for a chat
+export const getMessages = async (req: Request, res: Response) => {
     try {
         const id = req.params.id
-        const blockList = await BlockModel.find({blockee_id:id})
+        const messages = await MessageModel.find({chatid:id})
 
         return res.status(200).json({
             success: true,
-            count: blockList.length,
-            data: blockList
+            count: messages.length,
+            data: messages
         })
 
     } catch (error) {
@@ -26,13 +24,19 @@ export const checkBlocked = async (req: Request, res: Response) => {
 //@desc Get all user
 //@route Get api/v1/list
 //access Public
-export const blockUser = async (req: Request, res: Response) => {
+export const addMessage = async (req: Request, res: Response) => {
     try {
-     const user = await BlockModel.create(req.body)
+      console.log(req.body)
+     const message = await MessageModel.create({
+        chatid:req.body.chatId,
+        message:req.body.message,
+        sendrs_id:req.body.senderid,
+        sendrs_username:req.body.username
+    })
 
      return res.status(201).json({
         success: true,
-        data: user
+        data: message
     })
 
     } catch (error) {

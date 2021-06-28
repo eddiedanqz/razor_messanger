@@ -1,11 +1,12 @@
-import  express,{Application,Request,Response,NextFunction} from "express";
+import  express,{Application} from "express";
 import http from "http"
 import  dotenv from "dotenv";
 import { Server, Socket } from "socket.io";
 import { joinUser, userLeft,getUsers} from './utils/users'
 import { connectDb } from "./db";
-import {router} from './routes/user'
-
+import {router} from './routes/chats'
+import {messageRouter} from './routes/messages'
+import {userRouter} from './routes/user'
 
 // Load environment variables
 dotenv.config({path:'./config/config.env'})
@@ -27,23 +28,37 @@ const io = new Server(server, {
   
   // Server-side instance
 io.on("connection", (socket: Socket) => {
-  // Create private chat
-  socket.join("myChat")
-
+  //
+  socket.emit("connected-users")
+  
   // 
-    socket.on("handle-connection", (username:string) =>{
-      if(!joinUser(socket.id, username)){
-        socket.emit("username-taken")
-      }else{
-        socket.emit("username-submitted")
-        io.to("myChat").emit("get-connected-users",getUsers())  
-      }
+    socket.on("handle-connection", (data) =>{
+       joinUser(socket.id,data.id,data.username,data.email)
+   // socket.emit("username-submitted")
+    socket.emit("get-connected-users",getUsers())  
 
     })
 
+  // Create private chat
+  socket.on("joinChat", (chatid) => {
+    // Check if id exists and return else create
+     //  createChat(chatid)
+    // then join chat
+     socket.join(chatid)
+    })
+
+    //
+    socket.on("get-messages", (data:{chatid:string,message:string}) => { 
+      //fetch all messages to chatid
+      io.to(data.chatid).emit("recieve-message" ,data)
+      
+      })
+
+
     // Broadcast message
-    socket.on("message", (message: {message:string ,username:string}) =>{
-       socket.broadcast.to("myChat").emit("recieve-message" , message)
+    socket.on("message", (message: {chatId:string,message:string ,username:string}) =>{
+      //save messages with id
+       io.to(message.chatId).emit("recieve-message" , message)
     })
 
   // Disconnect user
@@ -58,7 +73,10 @@ io.on("connection", (socket: Socket) => {
 app.use(express.json())
 
 //
-app.use('/api/users' , router)
+app.use('/api/message' , messageRouter)
+app.use('/api/chat', router)
+app.use('/api/user', userRouter)
+
 
 const PORT:number = 5000 || process.env.PORT
 

@@ -1,9 +1,16 @@
 import React from 'react'
-const User = ({user}) => {
+import BlockIcon from '@material-ui/icons/Block';
+
+const User = ({user,joinChat,blockUser}) => {
     return (
-        <div>
+      <div className="sidebarChat">
+        <div className="sidebarChat__info" onClick = { () => joinChat(user.id)}>
           {user.username}
-        </div>
+            </div>
+          <div className="sidebarChat__right">
+             <span className="chat__block"> <BlockIcon onClick={() => blockUser(user)} /> </span>
+            </div> 
+       </div>
     )
 }
 

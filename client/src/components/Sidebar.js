@@ -1,16 +1,18 @@
 import React from 'react'
 import '../css/Sidebar.css';
-import '../css/SidebarChat.css'
+import '../css/OnlineUsers.css';
 import ConnectedUsers from './ConnectedUsers'
 
-const Sidebar = ({connectedUsers}) => {
+const Sidebar = ({connectedUsers,joinChat,email,blockUser}) => {
     return (
         <div className="sidebar">
-             <div className="sidebar__header">
-                 Users
+             <div className="sidebar-header">
+                  {email}
              </div>
-             <div className="modal__body">
-                 <ConnectedUsers connectedUsers={connectedUsers}/>
+             <div className="side-body">
+             <h3 className="empty-message"> Online {connectedUsers.length}</h3>
+             <hr/>
+                 <ConnectedUsers connectedUsers={connectedUsers} joinChat={joinChat} blockUser={blockUser} />
              </div>
         </div>
     )

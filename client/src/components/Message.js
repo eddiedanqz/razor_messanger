@@ -4,8 +4,9 @@ const Message = ({message,username}) => {
     //const messageReceived =  message.username !== username
 
     return (
-                <div >
-                   <p className={`chat__message ${username === message.username && 'sender__myself'}`}>{message.message}</p>
+                <div className="message__container">
+                   <p className={`chat__message ${username === message.username && 'sender__myself'}`}>{message.message}
+                   </p>
                    <span className="chat__name"> {message.username} </span>
                  </div>
        

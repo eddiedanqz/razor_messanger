@@ -1,6 +1,9 @@
 import  express from "express";
-import {getUsers,addUser} from '../controllers/userController'
-export const router = express.Router();
+import {checkBlocked,blockUser} from '../controllers/userController'
+export const userRouter = express.Router();
 
-router.route('/').get(getUsers).post(addUser)
+userRouter.route('/block/:id').get(checkBlocked)
+userRouter.route('/block').post(blockUser)
+
+
 
