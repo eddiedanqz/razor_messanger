@@ -91,12 +91,11 @@ const handleSendMessage = () =>{
 const joinChat = (id) => {
     // Set messages to null
     setMessages([])
- // handleConnection()
 
    const reciver_id = id
    const  sender_id = userId
    const chatid = parseInt(reciver_id) + parseInt(sender_id)
-   let data = {chatid,reciver_id,sender_id}
+   let data = {chatid:`${chatid}`,reciver_id,sender_id}
      // Set chat id 
      setId(chatid)
 
@@ -127,7 +126,7 @@ const blockUser = (user) => {
     blocker_id: userId, blocker_name: username,
     blockee_id: user.id, blockee_name: user.username
   }
-console.log(user)
+
   axios.post('api/user/block/',data).then((res)=>{
     handleConnection()
     console.log(res)
@@ -136,19 +135,6 @@ console.log(user)
 
   return (
     <div className="App">
-     {
-      /* !connected && 
-       <form className="" onSubmit={e => {
-         e.preventDefault()
-         handleConnection()
-       }}>
-         <input value={username} type="text" onChange={e => setUsername(e.target.value)} 
-         required={true} />
-         <button type="submit">Submit</button>
-       </form>*/
-     }
-     {
-      // connected  && 
       <div className="app">
          <div className="app-body">
           <Sidebar connectedUsers= {connectedUsers} joinChat = {joinChat} email={email} blockUser={blockUser}/>
@@ -156,7 +142,6 @@ console.log(user)
            handleSendMessage={handleSendMessage}/>
          </div>
       </div>
-     }
     </div>
   );
 }
