@@ -6,11 +6,12 @@ const SignupButton = () => {
   return (
     <button
       className="btn btn-primary btn-block"
-      onClick={() =>
+      onClick={() =>{
         loginWithRedirect({
           screen_hint: "signup",
         })
-      }
+        localStorage.removeItem("activeChatId");
+      }}
     >
       Sign Up
     </button>

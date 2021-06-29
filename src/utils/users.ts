@@ -1,3 +1,4 @@
+// Current users
 let  users: {connectionid:string,id:string, username:string, email:string}[]  = []
 
 // Add user

@@ -1,83 +1,80 @@
-import  express,{Application} from "express";
+import express, { Application } from "express";
 import http from "http"
-import  dotenv from "dotenv";
+import dotenv from "dotenv";
 import { Server, Socket } from "socket.io";
-import { joinUser, userLeft,getUsers} from './utils/users'
+import { joinUser, userLeft, getUsers } from './utils/users'
 import { connectDb } from "./db";
-import {router} from './routes/chats'
-import {messageRouter} from './routes/messages'
-import {userRouter} from './routes/user'
+import { router } from './routes/chats'
+import { messageRouter } from './routes/messages'
+import { userRouter } from './routes/user'
 
 // Load environment variables
-dotenv.config({path:'./config/config.env'})
+dotenv.config({ path: './config/config.env' })
 
 // Initialising express
-const app:Application  = express();
+const app: Application = express();
 
 const server = http.createServer(app)
 
 // Connect to socket.io server
 const io = new Server(server, {
-  cors:{
-      origin:'http://localhost:3000'
+  cors: {
+    origin: 'http://localhost:3000'
   }
-  });
+});
 
-  // Connect to database
-  connectDb()
-  
-  // Server-side instance
-io.on("connection", (socket: Socket) => {
-  //
-  socket.emit("connected-users")
-  
-  // 
-    socket.on("handle-connection", (data) =>{
-       joinUser(socket.id,data.id,data.username,data.email)
-   // socket.emit("username-submitted")
-    socket.emit("get-connected-users",getUsers())  
+// Connect to database
+connectDb()
 
-    })
-
-  // Create private chat
-  socket.on("joinChat", (chatid) => {
-    // Check if id exists and return else create
-     //  createChat(chatid)
-    // then join chat
-     socket.join(chatid)
-    })
-
-    //
-    socket.on("get-messages", (data:{chatid:string,message:string}) => { 
-      //fetch all messages to chatid
-      io.to(data.chatid).emit("recieve-message" ,data)
-      
-      })
-
-
-    // Broadcast message
-    socket.on("message", (message: {chatId:string,message:string ,username:string}) =>{
-      //save messages with id
-       io.to(message.chatId).emit("recieve-message" , message)
-    })
-
-  // Disconnect user
-   socket.on("disconnect",()=>{
-      userLeft(socket.id)
-   })
-
-  });
-
-  
 //
 app.use(express.json())
 
-//
-app.use('/api/message' , messageRouter)
+// Register routes
+app.use('/api/message', messageRouter)
 app.use('/api/chat', router)
 app.use('/api/user', userRouter)
 
+// Server-side instance
+io.on("connection", (socket: Socket) => {
 
-const PORT:number = 5000 || process.env.PORT
+  // 
+  socket.on("handle-connection", (data) => {
+    joinUser(socket.id, data.id, data.username, data.email)
+    // socket.emit("username-submitted")
+    socket.emit("get-connected-users", getUsers())
 
-server.listen(PORT , () => console.log(`server is running on ${PORT}`))
+  })
+
+  // Create private chat
+  socket.on("joinChat", (chatid) => {
+    // Open chat
+    socket.join(chatid)
+    //  saveChat(chatid)
+  })
+
+  /*
+  socket.on("get-messages", (data:{chatid:string,message:string}) => { 
+    
+    io.to(data.chatid).emit("recieve-message" ,data)
+    
+    })
+  */
+
+
+  // Broadcast message
+  socket.on("message", (message: { chatId: string, message: string, username: string }) => {
+
+    io.to(message.chatId).emit("recieve-message", message)
+  })
+
+  // Disconnect user
+  socket.on("disconnect", () => {
+    userLeft(socket.id)
+  })
+
+});
+
+
+const PORT: number = 5000 || process.env.PORT
+
+server.listen(PORT, () => console.log(`server is running on ${PORT}`))
