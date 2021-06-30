@@ -55,7 +55,7 @@ io.on("connection", (socket: Socket) => {
   /*
   socket.on("get-messages", (data:{chatid:string,message:string}) => { 
     
-    io.to(data.chatid).emit("recieve-message" ,data)
+    socket.broadcast.to(data.chatid).emit("recieve-message" ,data)
     
     })
   */

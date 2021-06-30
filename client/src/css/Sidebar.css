@@ -2,6 +2,9 @@
     display: flex;
     flex-direction: column;
     flex: 0.30;
+    background-color: darkslategrey;
+    color: white;
+    margin-right: 1px;
 }
 
 .sidebar-header {
@@ -10,7 +13,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 20px;
-    border-right: 1px solid lightgray;
+   /* border-right: 1px solid lightgray;*/
     text-align: center;
 }
 
@@ -26,14 +29,6 @@
     font-size: 15px !important;
     color: rgb(59, 58, 58);
 
-}
-
-.sidebar__search {
-    display: flex;
-    align-items: center;
-    background-color: #f6f6f6;
-    height: 39px;
-    padding: 10px;
 }
 
 .sidebar__searchContainer {
