@@ -6,10 +6,15 @@
  
 #Usage
  npm install    ----- Install all node dependencies
+ 
  npm run start  ----- Start frontend dev server when command is run in the client folder
+ 
  npm run server ----- Start backend dev server when command is run in the root folder.
+ 
  npm run dev    ----- Runs both front and backend server simultaneously.
+ 
  npm run build  ----- Compiles typescript files to javascript.
+ 
  npm run heroku-postbuild ----- Builds the app for production when deploying to heroku
  
  #Features
