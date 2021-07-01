@@ -5,12 +5,12 @@
  Clone this repo
  
 # Usage
- npm install    ----- Install all node dependencies \n
+ npm install    ----- Install all node dependencies<br>
  npm run start  ----- Start frontend dev server when command is run in the client folder<br>
- npm run server ----- Start backend dev server when command is run in the root folder.
- npm run dev    ----- Runs both front and backend server simultaneously.
- npm run build  ----- Compiles typescript files to javascript.
- npm run heroku-postbuild ----- Builds the app for production when deploying to heroku
+ npm run server ----- Start backend dev server when command is run in the root folder.<br>
+ npm run dev    ----- Runs both front and backend server simultaneously.<br>
+ npm run build  ----- Compiles typescript files to javascript.<br>
+ npm run heroku-postbuild ----- Builds the app for production when deploying to heroku<br>
  
  # Features
   1. User registration.
